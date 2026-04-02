@@ -1,7 +1,8 @@
 # Design Specification: Red Hat Copywriter Skill
-_Document ID: DS-RHCW-001 | Version: 0.1 | Status: Design Phase_
-_Created: 2026-04-02 | Skill Owner: R. Patel | PRD: PRD-RHCW-001 v0.1_
+_Document ID: DS-RHCW-001 | Version: 0.2 | Status: Design Phase_
+_Created: 2026-04-02 | Updated: 2026-04-02 | Skill Owner: R. Patel | PRD: PRD-RHCW-001 v0.1_
 _Taxonomy: TDR-RHCW-001 (Approved) | Q-01: DR-Q01 (Accepted) | Q-04: DR-Q04 (Accepted)_
+_Change summary v0.2: F-01 — added social+word_count_target rejection rule and exhaustive multi-error validation requirement. F-05 — clarified action_taken semantics (replaced vs flagged_for_review) resolving AC-02 logical inconsistency; mandated terminology_audit block present on all outputs including clean briefs._
 
 ---
 
@@ -32,6 +33,8 @@ This document is the implementation reference for the prompt engineering sprint.
 - If `content_type` is not one of the five valid enum values: return error listing valid values
 - If `key_messages` is empty or has more than 5 items: return error with count constraint
 - If `word_count_target` is outside [50, 2000]: return error with valid range
+- If `content_type` is `social` and `word_count_target` is provided: return error with `"code": "field_not_applicable"` — social posts use per-post character limits (≤ 280 chars), not word count; this field combination is undefined behaviour and must be rejected at validation
+- Validation must be exhaustive: all invalid fields must be reported in a single `validation_errors[]` array; the skill must not abort after the first failure (early-abort is a defect, tested by AC-05-E)
 - Error response is not a content draft; it is a structured error object (see Section 5.2)
 
 **Trigger condition:** Any input brief submission
@@ -54,7 +57,7 @@ This document is the implementation reference for the prompt engineering sprint.
 | `landing_page` | Landing page handler | `templates/landing-page.md` | 100–250 words (headline + body) |
 | `social` | Social handler | `templates/social.md` | ≤ 280 chars per post, batch of 3 |
 
-**Length override:** If `word_count_target` is provided and within schema bounds, it overrides the default length. The skill notes in output metadata when an override is applied.
+**Length override:** If `word_count_target` is provided and within schema bounds, it overrides the default length for content types that use word count (blog, solution_brief, email, landing_page). The skill notes in output metadata when an override is applied. Length override is assessed at ±10% of the target value. `word_count_target` is **not applicable** for the `social` content type — social posts are constrained by character count (≤ 280 per post), not word count; providing this field with `content_type: "social"` is a validation error caught by F-01.
 
 **Trigger condition:** After successful F-01 validation
 
@@ -82,6 +85,31 @@ This document is the implementation reference for the prompt engineering sprint.
 | `technical` | Technical, precise | Active, specific | "you" (practitioner); "Red Hat" (third) |
 | `executive` | Strategic, concise | Short, declarative | "your organisation", "your teams" |
 | `conversational` | Approachable, engaging | Varied; rhetorical questions OK | "you", "your team" |
+
+**Default behaviour:** When `tone_override` is absent from the input brief, the skill applies the `standard` variant. This default must be reflected in `metadata.tone_applied` as `"standard"`.
+
+### F-03.1 — Brand Scoring Rubric (BRR-001)
+
+_Document reference: DS-RHCW-BRR-001 (embedded below). This rubric is the evaluation instrument for AC-01 blind review. Version: BRR-001-v1.0. Owner: Brand Experience team (approved by R. Patel, Skill Owner)._
+
+Reviewers score each draft on five dimensions using a 1–5 integer scale. A draft is rated **"compliant"** if and only if it scores **≥ 3 on every dimension**. A score of < 3 on any single dimension is a fail regardless of other scores.
+
+| Dim | Dimension | Score 1 — Fail | Score 3 — Pass (minimum) | Score 5 — Exemplary |
+|---|---|---|---|---|
+| D1 | **Directness and Clarity** — Language is concise and purposeful; no padding, hedging, or filler phrases | Vague, verbose, or padded throughout; meaning obscured by unnecessary words | Mostly direct; occasional filler or hedging that does not obscure meaning | Entirely direct; every sentence carries a clear claim or instruction; no filler |
+| D2 | **Active Voice Preference** — Active constructions used where grammatically natural | Predominantly passive voice; constructions feel evasive or indirect | Mixed active/passive; passive used where active would be stronger | Active voice throughout; passive constructions appear only where grammatically necessary (e.g., true passives in technical contexts) |
+| D3 | **Tone Variant Adherence** — Register, vocabulary, and sentence length match the specified tone variant | Wrong register throughout; e.g., casual language for `executive` or jargon-heavy for `conversational` | Partial match; 1–2 register mismatches that a reviewer would notice | Fully and consistently matches the tone variant register as defined in the tone variant table above |
+| D4 | **Claim Discipline** — No absolute claims, superlatives, or banned expressions | Three or more instances of absolute claims ("always", "never", "eliminates"), superlatives ("best", "leading"), or banned expressions | One to two borderline instances; borderline = expressions that could be read as absolute but are contextually hedged | Zero absolute claims, superlatives, or banned expressions; all claims are factual and supportable from the `key_messages` provided |
+| D5 | **Audience Register Calibration** — Vocabulary and assumed knowledge level match the `target_audience` value | Audience register is clearly mismatched (e.g., unexplained acronyms for a C-suite audience, or oversimplified language for a practitioner) | Mostly appropriate; one or two instances where vocabulary or assumed knowledge does not match the stated audience | Perfectly calibrated; vocabulary, assumed knowledge, and examples are all appropriate for the specified audience |
+
+**Aggregate score:** The sum of all five dimension scores (range 5–25) is recorded for trend analysis. The aggregate does not independently gate pass/fail; the per-dimension minimum of 3 applies to each dimension separately.
+
+**Reviewer instructions:**
+1. Read the draft without reference to the input brief (blind review).
+2. Score each dimension independently using the 1–5 scale.
+3. Record the `tone_override` value after scoring to confirm the variant applied matches the score for D3.
+4. A draft is "compliant" if D1 ≥ 3 AND D2 ≥ 3 AND D3 ≥ 3 AND D4 ≥ 3 AND D5 ≥ 3.
+5. Record the rationale for any dimension scored < 3.
 
 **Trigger condition:** After F-02 routing establishes content-type handler
 
@@ -114,12 +142,12 @@ This document is the implementation reference for the prompt engineering sprint.
 **Acceptance criteria:** AC-02 (zero banned terms in output) and AC-03 (approved product names correct in ≥ 95% of references) and AC-06 (audit block present and accurate).
 
 **Behaviour:**
-- Scan the entire draft for each banned term in `standards/terminology-list.md` Section 2
-- For each match: record the term, the reason it is banned, and the approved alternative
-- Scan for incorrect variants of approved product names (Section 1 of terminology list)
-- If a banned term is detected, it must be replaced in the draft before delivery (AC-02: zero banned terms in output)
-- The audit block lists what was found and replaced, so reviewers have full visibility
-- If no flagged terms are found, the `flagged_terms` array is empty and `banned_terms_detected` is empty
+- Scan the entire draft for each banned term in `standards/terminology-list.md` Section 2; scan uses case-insensitive whole-word boundary matching; morphological variants listed as part of a banned term entry are treated as matching that term
+- For each confirmed banned term match: record the term, the reason it is banned, and the approved alternative; replace the term in the draft before delivery; set `action_taken: "replaced"` in the audit entry (AC-02 requirement)
+- Scan for incorrect variants of approved product names (Section 1 of terminology list); for variants where human judgement is required (context-dependent), set `action_taken: "flagged_for_review"` — these may remain in the draft pending review
+- **`action_taken` semantics (resolves AC-02 logical inconsistency):** `"replaced"` means the term was a confirmed banned term and has been substituted in the draft — the draft will not contain it. `"flagged_for_review"` means the term is a potential violation (e.g., ambiguous product name variant or context-dependent usage) that requires human review — it may remain in the draft. The AC-02 zero-banned-terms pass condition is upheld because confirmed banned terms always use `"replaced"`.
+- The audit block is **always present** in the output, even when no terms were flagged (AC-06 requirement); `flagged_terms` and `banned_terms_detected` are empty arrays, never omitted
+- `metadata.terminology_version` reflects the TERM-YYYY-QN stamp embedded in `standards/terminology-list.md` at skill build/deploy time
 
 **Audit block structure:**
 ```json
@@ -356,6 +384,7 @@ None. All design questions are resolved:
 | Blocker | Blocks | Owner | Status |
 |---|---|---|---|
 | `brand-tone-reference.md` content (TASK-BT-001) | F-03 draft generation; AC-01; AC-02 | R. Patel (Skill Owner) | BLOCKED — Awaiting Brand Experience team |
+| Brand scoring rubric (DS-RHCW-BRR-001) | AC-01 testability | Brand Experience team / R. Patel | RESOLVED — Rubric embedded in DS-RHCW-001 Section F-03.1 (BRR-001-v1.0) |
 | PRD stakeholder sign-offs (PMM, GTM Lead, Skill Owner) | All implementation | Skill Owner | PENDING |
 
 ---
