@@ -130,3 +130,24 @@ Deliverables:
 - ✅ PMM and GTM Lead review sign-off and architect decoupling approval — Scrum Master (⚡ Quick, 2 SP)
 
 ---
+### Sprint 3 — Core Skill Authoring | 2026-04-02 | 📋 reviewing | 15 SP
+**Goal:** [Phase: Core Skill Authoring]
+Author the primary skill artefacts: SKILL.md as the single agent-readable entry point, the copy-brief template, and the two core workflows (Summit prep and partner value proposition). Implements all functional requirements F-01 through F-07 and the output structure defined in Section 7 (Headline, Body Copy, CTA, Confidence Note). Skill logic references the standards block without embedding it directly.
+
+Deliverables:
+- SKILL.md: complete skill entry point including principles, intake routing, input validation logic (F-03, F-05), output structure declaration, and success criteria pointers
+- templates/copy-brief.md: fully specified YAML input brief schema matching Section 6, with field descriptions, valid enum values, and required/optional flags
+- workflows/summit-prep.md: end-to-end workflow for generating partner value prop, Before You Go narrative, and announcement blurb in a single pipeline run
+- workflows/partner-value-prop.md: standalone workflow for partner value proposition drafting with partner-first framing enforcement (F-01, F-02)
+- Inline references from SKILL.md to references/ files confirming decoupled standards consumption
+- README.md: installation instructions for both ~/.cursor/skills/ and ~/.claude/skills/ paths, usage examples, and contribution pointer
+- .env.example: documented config references with no secrets committed
+- .gitignore and LICENSE files committed
+
+**Delivered:**
+- ❌ Author SKILL.md and templates/copy-brief.md — Prompt Engineer (◉ Deep, 5 SP)
+- ❌ Author workflows/summit-prep.md and workflows/partner-value-prop.md — Prompt Engineer (◉ Deep, 5 SP)
+- ✅ Author README.md and scaffold repo config files — Devops Engineer (⚡ Quick, 2 SP)
+- ⏭ QA review: validate all sprint deliverables against PRD acceptance criteria — Qa Engineer (◈ Standard, 3 SP)
+
+---
