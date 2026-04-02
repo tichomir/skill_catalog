@@ -73,3 +73,22 @@ Deliverables:
 - ⏭ PMM and GTM Lead review sign-off and architect decoupling approval — Scrum Master (⚡ Quick, 2 SP)
 
 ---
+### Sprint 2 | 2026-04-02 | 📋 reviewing | 10 SP
+**Goal:** [Phase: Red Hat Standards Reference Block]
+Author and version the living reference content that the skill will consume: brand and tone notes, audience profiles, approved and banned terminology, and placeholder strings. This content lives in references/ and is designed to be updated independently of skill logic (satisfying F-06 and AC-06). Content is reviewed by the PMM and GTM Lead before being merged.
+
+Deliverables:
+- references/brand-and-tone-notes.md: Red Hat voice rules (bold, clear, human, open), approved terms, banned words/phrases, jargon blocklist
+- references/audience-profiles.md: differentiated guidance for technical decision makers, business executives, and partner sales teams
+- references/placeholders-to-replace.md: exhaustive list of strings that must not appear in final copy
+- Versioning scheme documented for references/ (e.g. semantic version header in each file)
+- QA review sign-off from PMM confirming accuracy of tone and terminology content
+- Architect approval confirming reference block is decoupled from skill logic
+
+**Delivered:**
+- ❌ Author references/brand-and-tone-notes.md with versioning header — Prompt Engineer (◈ Standard, 3 SP)
+- ❌ Author references/audience-profiles.md and references/placeholders-to-replace.md — Prompt Engineer (◈ Standard, 3 SP)
+- ⏭ Document versioning scheme for references/ in docs/references-versioning.md — Skills Architect (⚡ Quick, 2 SP)
+- ⏭ PMM and GTM Lead review sign-off and architect decoupling approval — Scrum Master (⚡ Quick, 2 SP)
+
+---
