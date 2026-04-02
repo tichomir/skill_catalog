@@ -195,3 +195,54 @@ Deliverables:
 - ✅ Fix: document or resolve BRR-001-v1.0 brand scoring rubric dependency for AC-01 production testing — Qa Engineer (◈ Standard, 3 SP)
 
 ---
+
+## Red Hat Copywriter Skill
+
+The `rhel-copywriter-skill` is available in this repository. It generates brand-compliant
+Red Hat marketing copy (blog posts, solution briefs, emails, landing pages, social posts)
+from a structured input brief.
+
+**Invoke in Claude Code:**
+
+```
+/rhel-copywriter
+```
+
+Claude Code will load the skill and prompt you for a YAML brief. The brief schema is at
+`rhel-copywriter-skill/schema/input-brief.schema.json`.
+
+**Required fields:** `content_type`, `product_or_topic`, `target_audience`, `key_messages`
+
+**Optional fields:** `tone_override` · `word_count_target` · `call_to_action` · `messaging_pillars`
+
+**Content types:** `blog` · `solution_brief` · `email` · `landing_page` · `social`
+
+**Output:** Structured JSON containing `draft`, `word_count`, `terminology_audit`, and
+`metadata`. See `rhel-copywriter-skill/skill.md` for full output contract.
+
+**Skill version:** 1.0.0 | Standards: BT-2026-Q2 | Terminology: TERM-2026-Q2
+
+**Installation verification:** See `docs/installation-verification-checklist.md` for
+the full checklist before marking integration complete.
+### Sprint 4 — Integration and Tool Configuration | 2026-04-02 | ✅ done | 21 SP
+**Goal:** [Phase: Integration and Tool Configuration]
+Wire the skill into Claude Code and Cursor tooling. This includes creating the slash command for Claude Code CLI, adding the Cursor rules entry, and exposing the skill via MCP server declaration. Validates that the skill is callable from both tool environments and from a controller persona pipeline as described in Section 8.
+
+Deliverables:
+- Claude Code slash command file under .claude/commands/ invoking the copywriter skill workflow
+- CLAUDE.md section documenting the skill's availability and usage pattern within Claude Code
+- settings.json hook or MCP server declaration enabling skill invocation from Claude Code CLI
+- Cursor .cursor/rules/ entry for the copywriter skill with correct scope and trigger configuration
+- Integration test confirming skill is callable from a controller persona pipeline
+- Integration test confirming skill is invocable via MCP / Claude Desktop as described in Section 8
+- Installation verification checklist for both tool targets committed to /docs/
+
+**Delivered:**
+- ✅ Design integration architecture and file layout for Claude Code and Cursor wiring — Skills Architect (⚡ Quick, 2 SP)
+- ✅ Author Claude Code integration artefacts: slash command, CLAUDE.md section, and MCP server declaration — Devops Engineer (◉ Deep, 5 SP)
+- ✅ Author Cursor rules entry and installation verification checklist for both tool targets — Devops Engineer (◈ Standard, 3 SP)
+- ✅ Write and execute integration tests: controller persona pipeline and MCP invocability — Qa Engineer (◉ Deep, 5 SP)
+- ✅ Fix: Claude Code slash command file was not written due to permission denial — Devops Engineer (◈ Standard, 3 SP)
+- ✅ Fix: Replace simulated test transcripts with actual executable integration tests — Qa Engineer (◈ Standard, 3 SP)
+
+---

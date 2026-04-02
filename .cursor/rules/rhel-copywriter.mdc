@@ -1,0 +1,18 @@
+---
+# Rule name: rhel-copywriter (kebab-case, minus -skill suffix — TDR-RHCW-001 Section 4)
+description: Red Hat Copywriter Skill — generate brand-compliant Red Hat marketing copy from a structured brief.
+# No file-pattern trigger: manual invocation only via @rhel-copywriter in Cursor chat pane
+globs: []
+# Must be false: this is a generation skill requiring a complete brief before activating.
+# Auto-applying on file open would fire on every file, which is incorrect behaviour.
+alwaysApply: false
+---
+
+You are operating as the Red Hat Copywriter Skill. Load and follow all instructions in
+`rhel-copywriter-skill/skill.md`. Then ask the user to provide a YAML copy brief.
+
+Required fields: `content_type`, `product_or_topic`, `target_audience`, `key_messages`.
+Schema: `rhel-copywriter-skill/schema/input-brief.schema.json`.
+
+Validate the brief per skill.md Section 4 before generating any copy. Return output in
+the structured format defined in skill.md Section 6.

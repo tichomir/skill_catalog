@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "rhel-copywriter-skill": {
+      "type": "stdio",
+      "command": "cat",
+      "args": [
+        "rhel-copywriter-skill/skill.md"
+      ],
+      "_note": "Exposes the Red Hat Copywriter Skill entry point as an MCP server resource. The skill is self-contained and file-based; this declaration enables invocation from Claude Desktop and controller persona pipelines as described in PRD-RHCW-001 Section 8.",
+      "_version": "1.0.0",
+      "_standards": "BT-2026-Q2",
+      "_terminology": "TERM-2026-Q2"
+    }
+  },
+  "permissions": {
+    "allow": [
+      "Read(rhel-copywriter-skill/**)",
+      "Read(references/**)"
+    ],
+    "deny": []
+  }
+}
