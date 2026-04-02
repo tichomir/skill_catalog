@@ -1,0 +1,32 @@
+# Pilot Brief — Summit Prep Pipeline
+# Sprint 6 — Pilot and Iteration
+# Pilot run: Red Hat Summit 2026 — IBM + Red Hat OpenShift for Hybrid Cloud
+# PMM contact: L. Okonkwo (Partner GTM, IBM Global Alliance)
+# GTM Lead contact: M. Ferreira (GTM Americas, Hybrid Cloud)
+# Invocation: /rhel-copywriter (content_type: summit_prep)
+# Submitted: 2026-04-02T09:00:00Z
+
+content_type: summit_prep
+audience: business_executive
+product_or_initiative: Red Hat OpenShift Container Platform
+partner_name: IBM
+key_messages:
+  - IBM and Red Hat OpenShift together cut enterprise application modernisation time
+    by an average of 40% compared with homegrown container platform builds, based on
+    IBM Consulting client delivery data across financial services and telecommunications
+    (IBM Institute for Business Value, 2025).
+  - IBM delivers Red Hat OpenShift as a fully managed co-sell service through the
+    Red Hat Co-Sell Ready programme — customers get a single contract, a single SLA,
+    and IBM's global delivery and support capability on top of the OpenShift platform.
+  - Red Hat OpenShift is the enterprise Kubernetes platform running more than 3,000
+    production deployments across financial services, healthcare, and government
+    worldwide; IBM customers inherit that proven operating record through the IBM
+    managed service engagement.
+  - IBM's application modernisation methodology is fully integrated with the Red Hat
+    OpenShift migration tooling — customers get IBM's AI-assisted modernisation
+    assessment and Red Hat's migration playbooks as a single coordinated offer, not
+    two separate vendor engagements to manage.
+tone_variant: executive
+output_format: slide-ready
+word_limit: 200
+call_to_action_hint: "Meet IBM at Summit to review the co-sell offer and book a joint modernisation assessment"

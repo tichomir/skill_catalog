@@ -2,27 +2,26 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "rhel-copywriter-skill/input-brief",
   "title": "RHCopywriterBrief",
-  "description": "Input brief for the Red Hat Copywriter Skill. Defined in PRD-RHCW-001 v0.1 Section 8. This schema is the authoritative machine-readable input contract for the skill.",
+  "description": "Input brief for the Red Hat Copywriter Skill v1.1.0. Authoritative machine-readable input contract. Field names and enums align with skill.md v1.1.0 and templates/copy-brief.md v1.1.0.",
   "type": "object",
-  "required": ["content_type", "product_or_topic", "target_audience", "key_messages"],
+  "required": ["content_type", "audience", "product_or_initiative", "key_messages", "tone_variant", "output_format"],
   "additionalProperties": false,
   "properties": {
     "content_type": {
       "type": "string",
-      "enum": ["blog", "solution_brief", "email", "landing_page", "social"],
-      "description": "The format of the content to be generated. Determines routing to the appropriate content-type handler and applies format-specific length constraints."
+      "enum": ["partner_value_prop", "summit_prep"],
+      "description": "Determines which workflow the skill invokes. partner_value_prop → workflows/partner-value-prop.md (single output block). summit_prep → workflows/summit-prep.md (three sequential outputs: partner value prop, Before You Go narrative, announcement blurb)."
     },
-    "product_or_topic": {
+    "audience": {
+      "type": "string",
+      "enum": ["technical_decision_maker", "business_executive", "partner_sales"],
+      "description": "Primary audience segment. Controls tone register, vocabulary, and assumed-knowledge level per references/audience-profiles.md. technical_decision_maker: IT architects, platform engineers, CTOs. business_executive: C-suite, CFO, COO, VP of IT. partner_sales: channel partners, ISV/GSI partners, co-sell partner SEs and AMs."
+    },
+    "product_or_initiative": {
       "type": "string",
       "minLength": 1,
       "maxLength": 500,
-      "description": "The Red Hat product, solution, or topic the content covers. Must use approved product names from standards/terminology-list.md on first reference."
-    },
-    "target_audience": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 200,
-      "description": "Primary audience persona (e.g. 'IT decision maker', 'DevOps engineer', 'C-suite executive')."
+      "description": "The Red Hat product, product portfolio, or joint initiative that is the subject of the copy. Must use approved product names from references/brand-and-tone-notes.md on first reference."
     },
     "key_messages": {
       "type": "array",
@@ -33,38 +32,72 @@
       },
       "minItems": 1,
       "maxItems": 5,
-      "description": "Core messages to convey, in priority order. The skill will incorporate these in sequence, weighting earlier items more heavily."
+      "description": "Specific claims or differentiators the copy must communicate, in priority order. Index 0 is the highest-priority message. Each message should be a specific, factual claim. Metrics should include the source in parentheses."
     },
-    "tone_override": {
+    "tone_variant": {
       "type": "string",
       "enum": ["standard", "technical", "executive", "conversational"],
-      "default": "standard",
-      "description": "Optional tone variant. 'standard' applies default Red Hat voice. Other variants adjust register while remaining within brand guidelines."
+      "description": "Register and style for the generated copy. standard: professional and direct, default for partner sales and general PMM content. technical: precise, practitioner-facing. executive: strategic and concise, conclusion-first. conversational: approachable, for event previews and announcement blurbs."
     },
-    "word_count_target": {
+    "output_format": {
+      "type": "string",
+      "enum": ["prose", "bullets", "slide-ready"],
+      "description": "Controls the structure of the Body Copy section. prose: flowing paragraphs (3–5). bullets: bulleted list (4–7 items). slide-ready: short labelled blocks for direct paste into presentation slides."
+    },
+    "partner_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "description": "Full legal or trading name of the partner organisation. When present, activates partner-first framing (F-01, F-02) throughout all output. If absent and content_type is partner-oriented, the skill inserts [PARTNER_NAME] placeholders."
+    },
+    "word_limit": {
       "type": "integer",
       "minimum": 50,
       "maximum": 2000,
-      "description": "Optional target word count. Overrides the content_type default length range when provided. Must fall within content_type valid range to avoid validation warning."
+      "description": "Optional Body Copy word count target. The skill generates output within ±10% of this value. Applies to Body Copy only; does not affect Headline or CTA. Defaults to workflow-specific range if omitted."
     },
     "call_to_action": {
       "type": "string",
       "minLength": 1,
       "maxLength": 300,
-      "description": "Optional explicit CTA to embed at the end of the piece (e.g. 'Start your free trial at redhat.com/trial')."
+      "description": "Optional explicit CTA text used verbatim in every output block's CTA section. Use when the GTM team has already approved a specific URL, stand reference, or action verb. When omitted, the skill derives a CTA from key_messages."
     },
-    "messaging_pillars": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 200
-      },
-      "maxItems": 10,
-      "description": "Optional list of Red Hat messaging pillars to align with. When provided, the skill will include a messaging_alignment block in the output indicating which pillars are addressed and any gaps."
+    "event_metadata": {
+      "type": "object",
+      "description": "Optional event-specific metadata. Applies only when content_type is summit_prep. Silently ignored for other content types. When present, substitutes real event values for placeholder strings in Before You Go and announcement blurb outputs.",
+      "required": ["event_name"],
+      "additionalProperties": false,
+      "properties": {
+        "event_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Full name of the event. Required when event_metadata block is present. Example: 'Red Hat Summit 2026'."
+        },
+        "event_date": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "ISO 8601 date or date range. Examples: '2026-05-06' or '2026-05-06/2026-05-08'."
+        },
+        "event_location": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "City, venue name, or 'Virtual'. Example: 'Boston, MA — Boston Convention and Exhibition Center'."
+        },
+        "booth_reference": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Partner booth or stand number. Example: 'Booth H3-420'. If omitted, [BOOTH_REFERENCE] is inserted in output and listed in unresolved_placeholders."
+        }
+      }
+    },
+    "language": {
+      "type": "string",
+      "default": "en",
+      "description": "BCP 47 language tag for the requested output language. Defaults to 'en' (English). v1.1 supports English only. Other values are accepted without validation error; the skill generates English output and includes a Confidence Note advisory directing the operator to docs/localisation-roadmap.md."
     }
   },
-  "_scaffold_note": "Schema body is complete per PRD Section 8. Implementation validation logic is out of scope for the design phase.",
-  "_version": "0.0.0-scaffold",
-  "_prd_ref": "PRD-RHCW-001 v0.1 Section 8"
+  "_version": "1.1.0",
+  "_prd_ref": "PRD-RHCW-001 v0.1 Section 8",
+  "_changelog": "../CHANGELOG.md"
 }

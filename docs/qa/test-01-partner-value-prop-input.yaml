@@ -1,0 +1,26 @@
+# Test 01 — Partner Value Proposition (Ecosystem Track)
+# Use case: Standalone partner value proposition for the ecosystem track
+# Pilot use case: Section 10 — partner value proposition for the ecosystem track
+# Invocation: /rhel-copywriter (content_type: partner_value_prop)
+
+content_type: partner_value_prop
+audience: partner_sales
+product_or_initiative: Red Hat OpenShift Container Platform
+partner_name: Wipro
+key_messages:
+  - Wipro's managed container platform service, built on Red Hat OpenShift Container
+    Platform, gives enterprise customers a fully operated Kubernetes environment with
+    99.9% uptime SLA and dedicated SRE support — without building internal platform
+    engineering capability from scratch.
+  - Wipro customers running Red Hat OpenShift Container Platform report a 35% reduction
+    in application deployment cycle time within six months of production rollout
+    (Wipro Engineering Benchmark Report, 2025).
+  - As a Red Hat Certified Partner, Wipro delivers solutions certified across OCI,
+    FIPS 140-2, and CNCF Kubernetes conformance standards, ensuring compatibility
+    with regulated enterprise environments.
+  - Wipro and Red Hat co-sell a managed OpenShift service through the Red Hat
+    Co-Sell Ready programme, combining Wipro's managed services wrapper and
+    migration expertise with Red Hat's platform SLA and upstream support.
+tone_variant: standard
+output_format: bullets
+word_limit: 250

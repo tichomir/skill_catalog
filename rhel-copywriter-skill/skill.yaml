@@ -1,9 +1,8 @@
 # Red Hat Copywriter Skill — Manifest
-# Scaffold only. Values are placeholders pending implementation.
 
 name: rhel-copywriter-skill
-version: 0.0.0
-status: scaffold
+version: 1.1.0
+status: active
 description: >
   AI-assisted copywriting skill that generates brand-compliant Red Hat marketing
   and technical content. Enforces approved terminology, flags banned terms, and
@@ -19,11 +18,8 @@ terminology_version: TERM-2026-Q2
 input_schema: schema/input-brief.schema.json
 
 content_types:
-  - blog
-  - solution_brief
-  - email
-  - landing_page
-  - social
+  - partner_value_prop
+  - summit_prep
 
 acceptance_criteria:
   - id: AC-01

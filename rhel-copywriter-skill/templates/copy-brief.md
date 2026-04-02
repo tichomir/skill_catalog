@@ -1,5 +1,5 @@
 # Copy Brief Schema — Red Hat Copywriter Skill
-_Schema version: 1.0.0 | Matches SKILL.md v1.0.0 | PRD: PRD-RHCW-001 v0.1 Section 6_
+_Schema version: 1.1.0 | Matches SKILL.md v1.1.0 | PRD: PRD-RHCW-001 v0.1 Section 6_
 _Submit a completed YAML block in this format to the skill. Fields marked REQUIRED must_
 _be present and non-empty. Fields marked OPTIONAL may be omitted._
 
@@ -174,11 +174,88 @@ output_format: prose  # REQUIRED — replace with your chosen output format
 #   Constraints:
 #     - Must be an integer between 50 and 2000 (inclusive).
 #     - Applies to Body Copy word count only; does not affect Headline or CTA.
-#     - Not applicable to individual social posts (character-limited separately).
 #
 # Type: integer (50–2000)
 # ──────────────────────────────────────────────────────────────────────────────
 # word_limit: 250  # OPTIONAL — omit to use workflow default length
+
+# ──────────────────────────────────────────────────────────────────────────────
+# FIELD: call_to_action
+# OPTIONAL
+# Description: An explicit CTA string to use verbatim in every output block's
+#   CTA section. Use this when the GTM team has already approved a specific
+#   action verb, URL, or stand reference and does not want the skill to
+#   generate a CTA from the key_messages.
+#
+#   When to use:
+#     - You have an approved registration link or landing page URL.
+#     - The event stand number is confirmed and should appear in the CTA.
+#     - A specific action verb has been agreed (e.g. "Schedule your demo at...").
+#   When to omit:
+#     - You want the skill to derive an appropriate CTA from key_messages.
+#     - The CTA will be decided after copy review (flag in Confidence Note instead).
+#
+#   Examples:
+#     "Visit IBM and Red Hat at Booth H3-420 during Red Hat Summit 2026."
+#     "Schedule a co-sell discovery call at redhat.com/partners/ibm."
+#
+# Type: string (1–300 characters)
+# ──────────────────────────────────────────────────────────────────────────────
+# call_to_action: ""  # OPTIONAL — omit to let the skill generate a CTA
+
+# ──────────────────────────────────────────────────────────────────────────────
+# FIELD: event_metadata
+# OPTIONAL — applies only when content_type is summit_prep
+# Description: Structured event details for Summit content. When present, the
+#   skill substitutes these values into the Before You Go narrative and
+#   announcement blurb outputs rather than using placeholder strings.
+#   Silently ignored when content_type is not summit_prep.
+#
+#   Sub-fields:
+#     event_name     — Full name of the event (e.g. "Red Hat Summit 2026").
+#                      Required if event_metadata block is present.
+#     event_date     — ISO 8601 date or date range (e.g. "2026-05-06/2026-05-08").
+#                      Optional.
+#     event_location — City, venue, or "Virtual". Optional.
+#     booth_reference — Partner booth or stand number (e.g. "Booth H3-420").
+#                       Optional. If omitted, [BOOTH_REFERENCE] is inserted in
+#                       output and listed in unresolved_placeholders.
+#
+#   When to use:
+#     - Booth/stand number is confirmed by the events team.
+#     - You want Summit dates and location to appear correctly in copy without
+#       editing the output manually after generation.
+#   When to omit:
+#     - Event details are not yet confirmed. The skill will use [PLACEHOLDER]
+#       strings that you can resolve before publication.
+#
+# ──────────────────────────────────────────────────────────────────────────────
+# event_metadata:           # OPTIONAL — remove block if event details not confirmed
+#   event_name: ""          # Required if block is present; e.g. "Red Hat Summit 2026"
+#   event_date: ""          # Optional; ISO 8601 date or range; e.g. "2026-05-06/2026-05-08"
+#   event_location: ""      # Optional; e.g. "Boston, MA" or "Virtual"
+#   booth_reference: ""     # Optional; e.g. "Booth H3-420"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# FIELD: language
+# OPTIONAL
+# Description: BCP 47 language tag for the requested output language.
+#   Defaults to "en" (English) if omitted.
+#
+#   v1.1 supports English ("en") only. Specifying any other language tag is
+#   accepted without a validation error — the skill generates English output
+#   and includes an advisory in the Confidence Note. See
+#   docs/localisation-roadmap.md for the multi-language roadmap and the pt-BR
+#   (Portuguese, Brazil) target scheduled as the first non-English language.
+#
+#   When to use:
+#     - Leave omitted for English output (the common case).
+#     - Set to "pt-BR" to express intent for Portuguese (Brazil) output —
+#       this will be honoured in a future version.
+#
+# Type: string (BCP 47 language tag)
+# ──────────────────────────────────────────────────────────────────────────────
+# language: en  # OPTIONAL — defaults to "en"; only "en" is fully supported in v1.1
 ```
 
 ---
@@ -236,3 +313,6 @@ word_limit: 200
 | `tone_variant` | **Required** | string enum | `standard` · `technical` · `executive` · `conversational` |
 | `output_format` | **Required** | string enum | `prose` · `bullets` · `slide-ready` |
 | `word_limit` | Optional | integer | 50–2000 |
+| `call_to_action` | Optional | string | 1–300 characters; used verbatim in CTA section |
+| `event_metadata` | Optional | object | Only for `summit_prep`; sub-fields: `event_name` (required), `event_date`, `event_location`, `booth_reference` |
+| `language` | Optional | string | BCP 47 tag; default `en`; only `en` fully supported in v1.1 |

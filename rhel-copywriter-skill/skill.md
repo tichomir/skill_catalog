@@ -1,6 +1,6 @@
 ---
 name: rhel-copywriter-skill
-version: 1.0.0
+version: 1.1.0
 description: >
   Agent-readable entry point for the Red Hat Copywriter Skill. Produces brand-compliant
   partner value propositions, Summit narratives, and announcement blurbs for PMM and
@@ -13,6 +13,7 @@ terminology-ref: TERM-2026-Q2
 prd: PRD-RHCW-001 v0.1
 design-spec: docs/design-spec.md
 acceptance-criteria: docs/acceptance-criteria-matrix.md
+changelog: CHANGELOG.md
 ---
 
 # Red Hat Copywriter Skill — Agent Entry Point
@@ -130,6 +131,9 @@ validation error.
 |---|---|---|---|
 | `partner_name` | string | 1–300 characters | Triggers partner-first framing (F-01, F-02) when present |
 | `word_limit` | integer | 50–2000 | Overrides default length for the selected workflow |
+| `call_to_action` | string | 1–300 characters | Explicit CTA text to embed in every output block. When provided, use this verbatim for the CTA section rather than generating one from key_messages. Useful when the GTM team has approved a specific URL, stand reference, or action verb. |
+| `event_metadata` | object | see sub-fields below | Event-specific metadata for `summit_prep` content. When present and `content_type` is `summit_prep`, the skill substitutes real values for event placeholders in the Before You Go narrative and announcement blurb. Ignored for other `content_type` values. Sub-fields: `event_name` (string, required if object present), `event_date` (string ISO 8601 date, optional), `event_location` (string, optional), `booth_reference` (string, optional — e.g. "Booth H3-420"). |
+| `language` | string | BCP 47 language tag | Output language. Default: `en`. Only `en` is fully supported in v1.1. Other values are accepted for future-compatibility but the skill will generate output in English and include a note in the Confidence Note that localisation is not yet available. See `docs/localisation-roadmap.md`. |
 
 ### 4.3 Enum Values
 
@@ -153,7 +157,7 @@ Validation is **exhaustive**: collect all invalid fields and report them in a si
 response. Do not abort after the first error (implements AC-05).
 
 ```
-VALIDATION ERROR — Red Hat Copywriter Skill v1.0.0
+VALIDATION ERROR — Red Hat Copywriter Skill v1.1.0
 
 validation_errors:
   - field: <field-name>
@@ -204,6 +208,29 @@ Receive input brief (YAML — see templates/copy-brief.md)
   │                                                      flag in Confidence Note
   │
   ├── Apply word_limit override if provided
+  │
+  ├── Apply call_to_action override if provided
+  │     └── Present → Use verbatim for CTA section in all output blocks
+  │
+  ├── Apply event_metadata if content_type is summit_prep and field is present
+  │     └── Substitute event_name, event_date, event_location, booth_reference
+  │           into Before You Go narrative and announcement blurb where applicable
+  │           └── If booth_reference is absent → insert [BOOTH_REFERENCE] placeholder;
+  │                 list in unresolved_placeholders
+  │
+  ├── Check language field
+  │     ├── Absent or "en" → generate in English; set output language: en
+  │     └── Other value → generate in English; set output language: en;
+  │                        add Confidence Note: "Output generated in English. Requested
+  │                        language '[value]' is not yet supported. See
+  │                        docs/localisation-roadmap.md for the multi-language roadmap."
+  │
+  ├── Check for tone_variant conflict with recommended default
+  │     ├── summit_prep + tone_variant "executive" for Before You Go output →
+  │     │     Add advisory in Confidence Note: "tone_variant 'executive' was applied
+  │     │     as specified. Consider reviewing a 'conversational' variant for
+  │     │     Before You Go slides — this tone may produce warmer in-session impact."
+  │     └── No conflict detected → proceed without advisory
   │
   ├── Select audience register from references/audience-profiles.md
   │     based on audience field value
@@ -267,12 +294,13 @@ with its name. Do not omit any section.
 ### 6.2 Output Envelope
 
 ```
-SKILL OUTPUT — Red Hat Copywriter Skill v1.0.0
+SKILL OUTPUT — Red Hat Copywriter Skill v1.1.0
 content_type: <value from brief>
 audience: <value from brief>
 tone_variant: <value applied>
 output_format: <value from brief>
 partner_name: <value from brief, or "[PARTNER_NAME] — unresolved">
+language: <value from brief, default "en">
 standards_ref_version: BT-2026-Q2
 terminology_version: TERM-2026-Q2
 generated_at: <ISO 8601 timestamp>
@@ -344,6 +372,14 @@ Full definitions in [`docs/acceptance-criteria-matrix.md`](docs/acceptance-crite
 - **Version stamps** in the output envelope allow QA to verify which standards versions
   were active for any given output (supports AC-06 decoupling verification per
   `docs/design-spec.md` Section 6.4).
+- **Language field** defaults to `en`. The `language` field in the output envelope is
+  always present as of v1.1.0. When the brief specifies a language other than `en`, the
+  skill generates English output and includes a Confidence Note advisory. See
+  `docs/localisation-roadmap.md` for the multi-language roadmap.
+- **event_metadata** is silently ignored when `content_type` is not `summit_prep`.
+  No validation error is produced for the mismatch; it is treated as a no-op.
+- **call_to_action override** takes precedence over any CTA generated from `key_messages`.
+  The verbatim value from the brief is used without reformatting.
 - **Partner name placeholder:** If `content_type` is `partner_value_prop` or `summit_prep`
   and `partner_name` is absent from the brief, insert `[PARTNER_NAME]` at every partner
   reference point in the draft and list it in `unresolved_placeholders`. Do not invent a
