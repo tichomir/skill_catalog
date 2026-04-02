@@ -1,0 +1,32 @@
+{
+  "_note": "PLACEHOLDER — Settings.json snippet for rhel-copywriter-skill hook and MCP registration. This is a design-phase stub. Values are illustrative only and must be validated against the target deployment environment before use.",
+  "_status": "scaffold",
+  "_prd_ref": "PRD-RHCW-001 v0.1",
+  "_taxonomy_note": "Taxonomy decision record TDR-RHCW-001 Section 5 notes that settings.json configuration is not required for v0.1 since the skill does not configure IDE-level settings. This snippet is provided as a placeholder for future tool-specific integration if needed.",
+
+  "mcpServers": {
+    "_note": "No MCP server declarations required for v0.1. The skill is self-contained and uses only embedded standards files. Populate this block if a future version requires external data access (e.g. dynamic terminology fetch)."
+  },
+
+  "hooks": {
+    "_note": "No hooks required for v0.1. The skill is invoked directly via the input brief schema. Populate this block if the skill needs pre/post-processing hooks in a specific IDE environment.",
+    "PreToolUse": [],
+    "PostToolUse": []
+  },
+
+  "permissions": {
+    "_note": "No special permissions required for v0.1. The skill reads embedded standards files only.",
+    "allow": [],
+    "deny": []
+  },
+
+  "skillRegistration": {
+    "id": "rhel-copywriter-skill",
+    "version": "0.0.0-scaffold",
+    "placement": "shared/rhel-copywriter-skill",
+    "inputSchema": "schema/input-brief.schema.json",
+    "promptFile": "skill.md",
+    "enabled": false,
+    "_enabled_note": "Set to true once implementation sprint is complete and brand-tone-reference.md is approved."
+  }
+}
