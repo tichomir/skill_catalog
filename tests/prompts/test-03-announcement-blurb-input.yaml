@@ -1,0 +1,25 @@
+# Test 03 — Announcement Blurb for New Integration
+# Use case: Summit announcement blurb for a new partner integration launching at Red Hat Summit
+# Pilot use case: Section 10 — announcement blurb for a new integration
+# Invocation: /rhel-copywriter (content_type: summit_prep)
+# Note: summit_prep produces all three outputs; this brief is optimised for
+#       the announcement blurb (Output 3) as the primary deliverable of interest.
+
+content_type: summit_prep
+audience: technical_decision_maker
+product_or_initiative: Red Hat Ansible Automation Platform
+partner_name: DXC Technology
+key_messages:
+  - DXC Technology's new Hybrid Cloud Automation Accelerator, launching at Red Hat Summit
+    2026, integrates directly with Red Hat Ansible Automation Platform to deliver
+    pre-built automation playbooks for SAP, VMware migration, and network infrastructure
+    provisioning — reducing automation onboarding time from weeks to hours.
+  - DXC and Red Hat co-develop the Hybrid Cloud Automation Accelerator as a jointly
+    validated solution under the Red Hat Co-Sell Ready programme, with a shared
+    go-to-market motion covering North America and EMEA from Q2 2026.
+  - Red Hat Ansible Automation Platform is certified for use in regulated industries
+    including financial services, government, and healthcare, enabling DXC customers
+    to automate compliance-sensitive workloads without additional validation overhead.
+tone_variant: conversational
+output_format: slide-ready
+word_limit: 160

@@ -1,0 +1,25 @@
+# Test 02 — Summit Prep / Before You Go Slide Narrative
+# Use case: Summit content package targeting Before You Go slide narrative for partner slides
+# Pilot use case: Section 10 — Before You Go slide narrative for partner slides
+# Invocation: /rhel-copywriter (content_type: summit_prep)
+# Note: summit_prep produces all three outputs; this brief is optimised for
+#       the Before You Go narrative as the primary deliverable of interest.
+
+content_type: summit_prep
+audience: business_executive
+product_or_initiative: Red Hat Enterprise Linux
+partner_name: Accenture
+key_messages:
+  - Accenture's Red Hat Enterprise Linux migration service reduces operating system
+    total cost of ownership by an average of 28% over three years compared with
+    incumbent virtualisation platforms, based on Accenture client engagements
+    across financial services and public sector (Accenture Case Study Digest, 2025).
+  - Accenture delivers Red Hat Enterprise Linux as a fully managed, subscription-based
+    service through the Red Hat Embedded Partner Programme, giving customers a
+    predictable cost model with no hidden licensing fees.
+  - Red Hat Enterprise Linux is the operating system foundation for 90% of Fortune 500
+    companies running mission-critical workloads, providing Accenture customers with
+    a platform that carries proven enterprise-grade reliability.
+tone_variant: executive
+output_format: slide-ready
+word_limit: 180
