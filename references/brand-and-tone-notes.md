@@ -1,12 +1,13 @@
 ---
-version: 1.0.0
-last-updated: 2026-04-02
+version: 1.0.1
+last-updated: 2026-04-03
 authors:
   - Prompt Engineer (T. Hadzhiev)
   - Skill Owner (R. Patel)
 reviewed-by: PMM (J. Morales)
 standards-ref: BT-2026-Q2
 next-review: 2026-07-01
+changelog: "1.0.1 (2026-04-03): Added 'activate' to overused jargon blocklist (Section 3.2). PATCH-level correction."
 ---
 
 # Red Hat Brand and Tone Notes
@@ -205,6 +206,7 @@ _The terms below must not appear in Red Hat-authored or Red Hat-attributed copy.
 | unlock | Describe the specific capability or outcome |
 | journey | Describe the specific process or progression |
 | ecosystem partners | "certified partners", "technology partners", "ISV partners" |
+| activate | "enable", "start", "deploy", or describe the specific action taken |
 
 ### 3.3 Legally Sensitive
 
