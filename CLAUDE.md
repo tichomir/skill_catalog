@@ -288,3 +288,24 @@ Deliverables:
 - ✅ Fix: skill.md version regression from 1.0.0 to 0.2.0 — Prompt Engineer (◈ Standard, 3 SP)
 
 ---
+### Sprint 5 — Testing and QA | 2026-04-03 | 📋 reviewing | 13 SP
+**Goal:** [Phase: Testing and QA]
+Validate the skill against all acceptance criteria using a minimum of three real representative prompts as required by delivery principles. Prompts must cover the three pilot use cases from Section 10: partner value proposition, Before You Go narrative, and announcement blurb. QA reviewer and architect must sign off before merge to main.
+
+Deliverables:
+- Test prompt set: minimum three real input briefs covering partner value prop, Summit announcement, and ecosystem deck section
+- Test output records: captured outputs for each prompt with pass/fail annotation against AC-01 through AC-06
+- Red Hat tone check report: structured review confirming no jargon, no vague claims, partner-first framing in all outputs (AC-02)
+- Clarification-request test: verified behaviour when a required brief field is missing (AC-04)
+- Persona portability test: skill imported into a second persona agent and invoked successfully (AC-05)
+- Standards versioning test: references/brand-and-tone-notes.md updated; confirmed skill logic unchanged and output reflects new standard (AC-06)
+- QA review sign-off document
+- Architect approval recorded in GitHub PR review
+
+**Delivered:**
+- ✅ Author test prompt set and capture raw outputs — Qa Engineer (◈ Standard, 3 SP)
+- ❌ Annotate outputs against AC-01–AC-06 and author tone check report — Qa Engineer (◉ Deep, 5 SP)
+- ⏭ Remediate any skill defects surfaced by QA annotation — Prompt Engineer (◈ Standard, 3 SP)
+- ✅ Author QA sign-off document and submit architect approval PR — Qa Engineer (⚡ Quick, 2 SP)
+
+---
