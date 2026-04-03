@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "skill": "rhel-copywriter-skill",
+    "version": "1.1.0",
+    "placement": "shared/rhel-copywriter-skill",
+    "standards_ref": "BT-2026-Q2",
+    "terminology_ref": "TERM-2026-Q2",
+    "note": "Settings.json snippet for the Red Hat Copywriter Skill. Drop the 'skillRegistration' block into your project settings.json to register the skill. No MCP server or hooks are required for v1.1.0 — the skill is self-contained and reads standards files by relative path."
+  },
+
+  "mcpServers": {
+    "_note": "No MCP server declarations required. The skill reads standards files by relative path. Populate this block if a future version requires external data access (e.g. dynamic terminology fetch from the PMM content API)."
+  },
+
+  "hooks": {
+    "_note": "No hooks required for v1.1.0.",
+    "PreToolUse": [],
+    "PostToolUse": []
+  },
+
+  "permissions": {
+    "_note": "No special permissions required. The skill reads from the local references/ and rhel-copywriter-skill/ directories only.",
+    "allow": [],
+    "deny": []
+  },
+
+  "skillRegistration": {
+    "id": "rhel-copywriter-skill",
+    "version": "1.1.0",
+    "placement": "shared/rhel-copywriter-skill",
+    "inputSchema": "rhel-copywriter-skill/schema/input-brief.schema.json",
+    "promptFile": "rhel-copywriter-skill/skill.md",
+    "slashCommand": ".claude/commands/rhel-copywriter.md",
+    "enabled": true
+  }
+}

@@ -1,0 +1,36 @@
+# Red Hat Copywriter Skill — Manifest
+
+name: rhel-copywriter-skill
+version: 1.1.0
+status: active
+description: >
+  AI-assisted copywriting skill that generates brand-compliant Red Hat marketing
+  and technical content. Enforces approved terminology, flags banned terms, and
+  aligns output with Red Hat messaging pillars.
+
+owner: skill-owner
+domain: shared
+placement: shared/rhel-copywriter-skill
+
+standards_ref_version: BT-2026-Q2
+terminology_version: TERM-2026-Q2
+
+input_schema: schema/input-brief.schema.json
+
+content_types:
+  - partner_value_prop
+  - summit_prep
+
+acceptance_criteria:
+  - id: AC-01
+    description: Brand voice compliance >= 90% in blind reviewer evaluation
+  - id: AC-02
+    description: Zero banned terms in generated output
+  - id: AC-03
+    description: Approved product names correct in >= 95% of references
+  - id: AC-04
+    description: Correct template applied for all 5 content types across 50 test briefs
+  - id: AC-05
+    description: Malformed input briefs rejected with actionable error messages 100% of cases
+  - id: AC-06
+    description: Terminology audit block present and accurate for all outputs with >= 1 flagged term
