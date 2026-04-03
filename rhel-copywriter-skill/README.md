@@ -199,6 +199,7 @@ To propose changes to `references/` content, open a PR targeting the PMM Lead an
 
 ## Related Documents
 
+- **Demo guide:** [`/docs/copywriter/DEMO.md`](../docs/copywriter/DEMO.md) — scripted demo scenarios for live presentations
 - PRD: [`/docs/prd-v0.1.md`](../docs/prd-v0.1.md)
 - Q-01 Decision Record: [`/docs/decision-record-Q01.md`](../docs/decision-record-Q01.md)
 - Q-04 Decision Record: [`/docs/decision-record-Q04.md`](../docs/decision-record-Q04.md)

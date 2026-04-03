@@ -117,3 +117,21 @@ sign-off document. No changes to skill logic, schema, or workflow files are incl
 
 _This sign-off covers the Testing and QA sprint. Merge to main is contingent on
 architect approval recorded in the GitHub pull request._
+
+---
+
+## Canonical QA Artefact Location (Sprint 6 Update)
+
+The QA annotation and tone check report have been committed to the canonical taxonomy
+path as required by the acceptance criteria:
+
+| Document | Canonical path |
+|---|---|
+| AC annotation (pass/fail per test per AC) | `docs/copywriter/qa/qa-annotation.md` |
+| Red Hat tone check report | `docs/copywriter/qa/tone-check-report.md` |
+
+The `tests/qa-annotation.md` and `tests/tone-check-report.md` files remain in place as
+the working copies produced during Sprint 5 test execution. The canonical copies in
+`docs/copywriter/qa/` are the authoritative reference versions for this sign-off.
+
+_Updated by: QA Engineer Persona | Date: 2026-04-03_
