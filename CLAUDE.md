@@ -330,3 +330,15 @@ Deliverables:
 - ✅ Author QA sign-off document and submit architect approval PR — Qa Engineer (⚡ Quick, 2 SP)
 
 ---
+### Sprint 7 | 2026-04-03 | ✅ done | 14 SP
+**Goal:** In Sprint 6 I saw a version 0.2 of the skill was produced, but I have the feeling that it was not pushed to git? Let's see what we need to fix. 
+I also want a DEMO guide so I can demonstrate the skill itslef
+
+**Delivered:**
+- ✅ Audit repository and locate or reconstruct v0.2 skill files — Devops Engineer (⚡ Quick, 2 SP)
+- ✅ Commit and merge v0.2 copywriter skill files to main — Devops Engineer (◈ Standard, 3 SP)
+- ✅ Complete AC annotation and Red Hat tone check report — Qa Engineer (◈ Standard, 3 SP)
+- ✅ Author DEMO guide for the Copywriter Skill — Prompt Engineer (◈ Standard, 3 SP)
+- ✅ Fix: Commit and push staged audit files to remote — Devops Engineer (◈ Standard, 3 SP)
+
+---
